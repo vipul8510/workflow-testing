@@ -10,16 +10,12 @@ jobs:
   docker:
     name: Build and Push to Docker Hub
     runs-on: ubuntu-latest
-    outputs:
-      commit-id: ${{ steps.sha.outputs.sha-id }}
+    env:
+      commit-id: $(${GITHUB_SHA} | cut -c1-7)
     steps:
-      - name: Fetch SHA id
-        id: sha
-        run: echo "::set-output name=sha-id::$(echo ${GITHUB_SHA} | cut -c1-7)"
-
       - name: Print Logs
         run:
-          echo "commit id is ---------- ${{ outputs.commit-id }}"
+          echo "commit id is ---------- ${{ env.commit-id }}"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -38,9 +34,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: vipul8510/workflow-testing:${{ outputs.commit-id }}
+          tags: vipul8510/workflow-testing:${{ env.commit-id }}
 
       - name: Image digest
-        run: |
-          echo "commit id is ---------- ${{ outputs.commit-id }}"
-          echo ${{ steps.docker_build.outputs.digest }}
+        run: echo ${{ steps.docker_build.outputs.digest }}
