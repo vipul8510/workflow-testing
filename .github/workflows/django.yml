@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       commit-id:
-        description: Shortened commit id
+        description: "Shortened commit id"
         value: ${{ steps.sha.outputs.sha-id }}
     steps:
       - name: Fetch SHA id
@@ -36,9 +36,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: vipul8510/workflow-testing:${{ needs.docker.outputs.commit-id }}
+          tags: vipul8510/workflow-testing:${{ needs.docker.outputs.commit-id.value }}
 
       - name: Image digest
         run: |
-          echo "commit id is ---------- ${{ needs.docker.outputs.commit-id }}"
+          echo "commit id is ---------- ${{ needs.docker.outputs.commit-id.value }}"
           echo ${{ steps.docker_build.outputs.digest }}
