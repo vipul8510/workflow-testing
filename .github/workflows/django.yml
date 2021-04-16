@@ -14,11 +14,13 @@ jobs:
       commit_id: $(echo ${GITHUB_SHA} | cut -c1-7)
       type: First
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+      - name: Print Logs
         run: |
           echo "type is ---- ${{ env.type }}"
           echo "commit id is - ${{ env.commit_id }}"
+          
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
