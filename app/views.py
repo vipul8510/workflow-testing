@@ -1,6 +1,8 @@
 import datetime
+import json
 
 from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from app.models import Country
 
@@ -15,8 +17,9 @@ def hello_world(request):
 
     return HttpResponse(html)
 
+@csrf_exempt
 def add_country(request):
-    data = request.data
+    data = json.loads(request.body.decode('utf-8'))
     country = data['country']
     co = Country.objects.create(name=country)
     return JsonResponse({'name': country, 'id': co.id})
