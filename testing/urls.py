@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from app.views import hello_world, ping_response
+from app.views import hello_world, ping_response, add_country, fetch_country
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ping/', ping_response),
     path('app/', hello_world),
+    path('add_country/', add_country),
+    path('fetch_country/', fetch_country)
 ]
