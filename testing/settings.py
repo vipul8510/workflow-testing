@@ -9,8 +9,13 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+
+from simple_settings import settings
+
+if os.getenv("SIMPLE_SETTINGS") not in ["settings.development", "settings.production", "settings.local"]:
+    os.environ.setdefault("SIMPLE_SETTINGS", "settings.development")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '889gp*rk6)fc(fqjg)iqfp8f0peu!f^*a5_0^6q_xrsi62h6*s'
+SECRET_KEY = settings.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = settings.DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [settings.ALLOWED_HOSTS]
 
 
 # Application definition
@@ -78,11 +83,11 @@ WSGI_APPLICATION = 'testing.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'DJANGO-TEST',
-        'USER': 'vivek',
-        'PASSWORD': 'ubuntu',
-        'HOST': 'localhost',
-        'PORT': 5432,
+        'NAME': settings.POSTGRESQL['db_name'],
+        'USER': settings.POSTGRESQL['user'],
+        'PASSWORD': settings.POSTGRESQL['password'],
+        'HOST': settings.POSTGRESQL['host'],
+        'PORT': settings.POSTGRESQL['port'],
     }
 }
 

@@ -11,3 +11,6 @@ WORKDIR /workflow-testing
 ADD . /workflow-testing
 
 RUN pip install -r requirements.txt
+
+EXPOSE 8000
+CMD ["bash", "/workflow-testing/docker-entrypoint.sh"]
