@@ -3,7 +3,6 @@ import json
 
 from dotenv import load_dotenv
 
-print ('came inside PRODUCTION mode')
 load_dotenv(".env.production")
 
 SECRET_KEY = os.getenv('SECRET_KEY')

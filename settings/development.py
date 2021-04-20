@@ -4,7 +4,6 @@ import json
 from dotenv import load_dotenv
 
 
-print ('came inside DEVELOPMENT mode')
 load_dotenv(".env.development")
 
 SECRET_KEY = os.getenv('SECRET_KEY')

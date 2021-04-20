@@ -3,7 +3,6 @@ import json
 
 from dotenv import load_dotenv
 
-print ('came inside LOCAL mode')
 load_dotenv(".env.local")
 
 SECRET_KEY = os.getenv('SECRET_KEY')
