@@ -2,6 +2,7 @@ if [ -z "$ENVIRONMENT" ]
 then
     ENVIRONMENT='development'
 fi
+echo "environment is ------------------ ${ENVIRONMENT}"
 export SIMPLE_SETTINGS=settings.${ENVIRONMENT}
 
 echo "Run database migrations"

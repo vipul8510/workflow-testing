@@ -4,6 +4,7 @@ import json
 from dotenv import load_dotenv
 
 
+print ('came inside DEVELOPMENT mode')
 load_dotenv(".env.development")
 
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -14,6 +15,7 @@ try:
     DEBUG = json.loads(DEBUG)
 except ValueError:
     DEBUG = True
+print ('DEBUG is ', DEBUG)
 
 POSTGRESQL = {
     "db_name": os.getenv('POSTGRES_DB'),

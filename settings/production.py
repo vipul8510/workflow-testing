@@ -3,15 +3,14 @@ import json
 
 from dotenv import load_dotenv
 
-try:
-    load_dotenv(".env.production")
-except Exception as e:
-    pass
+print ('came inside PRODUCTION mode')
+load_dotenv(".env.production")
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
 
 DEBUG = os.getenv('DEBUG')
+print ('DEBUG is ', DEBUG)
 try:
     DEBUG = json.loads(DEBUG)
 except ValueError:
