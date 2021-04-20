@@ -4,10 +4,7 @@ import json
 from dotenv import load_dotenv
 
 
-try:
-    load_dotenv(".env.development")
-except Exception as e:
-    pass
+load_dotenv(".env.development")
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
