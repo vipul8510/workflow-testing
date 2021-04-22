@@ -132,5 +132,5 @@ dmypy.json
 .vscode/
 
 # migrations
-app/migrations/*
-!app/migrations/__init__.py
+#app/migrations/*
+#!app/migrations/__init__.py

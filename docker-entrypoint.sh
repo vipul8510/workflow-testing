@@ -4,9 +4,6 @@ then
 fi
 export SIMPLE_SETTINGS=settings.${ENVIRONMENT}
 
-echo "Run database migrations"
-python3 manage.py makemigrations
-
 echo "Apply database migrations"
 python3 manage.py migrate
 
