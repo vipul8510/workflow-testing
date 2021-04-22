@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from app.models import Country
 
 def ping_response(request):
-    data = {"message": "pong"}
+    data = {"message": "ping pong"}
     return JsonResponse(data)
 
 
