@@ -5,7 +5,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  docker:
+  deploy_to_docker:
     name: Build and Push to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -50,7 +50,7 @@ jobs:
         with:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_LAMBDA_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_LAMBDA_SECRET_ACCESS_KEY }}
-          REGION: ap-southeast-1
+          REGION: ap-south-1
           FunctionName: test_job
           Payload: '{"job": "${{ github.event.repository.name }}", "hash": "${{ steps.slug.outputs.sha7 }}" }'
 
@@ -71,7 +71,7 @@ jobs:
         with:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_LAMBDA_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_LAMBDA_SECRET_ACCESS_KEY }}
-          REGION: ap-southeast-1
+          REGION: ap-south-1
           FunctionName: test_job
           Payload: '{"step": "promoteCanary", "job": "${{ github.event.repository.name }}"}'
 
