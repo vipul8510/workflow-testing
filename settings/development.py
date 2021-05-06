@@ -14,7 +14,6 @@ try:
     DEBUG = json.loads(DEBUG)
 except ValueError:
     DEBUG = True
-print ('DEBUG is ', DEBUG)
 
 POSTGRESQL = {
     "db_name": os.getenv('POSTGRES_DB'),
