@@ -17,6 +17,7 @@ def hello_world(request):
 
     return HttpResponse(html)
 
+
 @csrf_exempt
 def add_country(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -24,6 +25,17 @@ def add_country(request):
     co = Country.objects.create(name=country)
     return JsonResponse({'name': country, 'id': co.id})
 
+
 def fetch_country(request):
     result = list(Country.objects.all().values('id', 'name'))
     return JsonResponse(dict(result=result))
+
+
+def fetch_users(request):
+    data = [['vivek', 'agarwal', 'vivek@gmail.com'],
+    ['Vivek', 'Agarwal', 'agrawalvivek@yahoo.com']]
+    users = [dict(first_name=item[0], last_name=item[1], email=item[2])
+        for item in data
+    ]
+
+    return JsonResponse(dict(result=users))
