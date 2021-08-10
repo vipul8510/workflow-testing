@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/workflow_testing_${GITHUB_REF#refs/heads/}:${{ steps.slug.outputs.sha7 }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/workflow_testing_"${GITHUB_REF#refs/heads/}":${{ steps.slug.outputs.sha7 }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
