@@ -12,6 +12,10 @@ jobs:
       - name: Get short SHA
         id: slug
         run: echo "::set-output name=sha7::$(echo ${GITHUB_SHA} | cut -c1-7)"
+        
+      - name: Get repo name with branch
+        id: repo_branch
+        run: echo "::set-output name=rb::$(workflow_testing_${GITHUB_REF#refs/heads/})"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -30,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/workflow_testing_"${GITHUB_REF#refs/heads/}":${{ steps.slug.outputs.sha7 }}
+          tags: ${{steps.repo_branch.outputs.rb}}:${{ steps.slug.outputs.sha7 }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
