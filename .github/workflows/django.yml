@@ -60,7 +60,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_LAMBDA_SECRET_ACCESS_KEY }}
           REGION: ap-south-1
           FunctionName: deploy_job
-          Payload: '{"job": fromJSON(${{ steps.repo_branch.outputs.rb }}), "hash": "${{ steps.slug.outputs.sha7 }}" }'
+          Payload: '{"job": "$(echo ${{ steps.repo_branch.outputs.rb }})", "hash": "${{ steps.slug.outputs.sha7 }}" }'
 
       - name: "Log output to console"
         run: echo '${{ fromJSON(steps.invoke_lambda_function.outputs.response).Payload }}'
