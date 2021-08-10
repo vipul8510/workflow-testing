@@ -41,7 +41,7 @@ jobs:
 
   deploy_canary:
     name: "Deploy canary"
-#     needs: deploy_to_docker
+    needs: deploy_to_docker
     runs-on: ubuntu-latest
     steps:
       - name: Get short SHA
