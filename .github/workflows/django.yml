@@ -34,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{steps.repo_branch.outputs.rb}}:${{ steps.slug.outputs.sha7 }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ steps.repo_branch.outputs.rb }}:${{ steps.slug.outputs.sha7 }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
