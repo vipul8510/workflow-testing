@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ develop, production ]
 
 jobs:
   deploy_to_docker:
@@ -12,6 +12,10 @@ jobs:
       - name: Get short SHA
         id: slug
         run: echo "::set-output name=sha7::$(echo ${GITHUB_SHA} | cut -c1-7)"
+        
+      - name: Get repo name with branch
+        id: repo_branch
+        run: echo "::set-output name=val::$(echo workflow-testing-${GITHUB_REF#refs/heads/})"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -30,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${{ steps.slug.outputs.sha7 }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ steps.repo_branch.outputs.val }}:${{ steps.slug.outputs.sha7 }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -43,6 +47,10 @@ jobs:
       - name: Get short SHA
         id: slug
         run: echo "::set-output name=sha7::$(echo ${GITHUB_SHA} | cut -c1-7)"
+        
+      - name: Get repo name with branch
+        id: repo_branch
+        run: echo "::set-output name=val::$(echo workflow-testing-${GITHUB_REF#refs/heads/})"
 
       - name: "Invoke lambda function"
         id: "invoke_lambda_function"
@@ -52,28 +60,28 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_LAMBDA_SECRET_ACCESS_KEY }}
           REGION: ap-south-1
           FunctionName: deploy_job
-          Payload: '{"job": "${{ github.event.repository.name }}", "hash": "${{ steps.slug.outputs.sha7 }}" }'
+          Payload: '{"job": "${{ steps.repo_branch.outputs.val }}", "hash": "${{ steps.slug.outputs.sha7 }}" }'
 
       - name: "Log output to console"
         run: echo '${{ fromJSON(steps.invoke_lambda_function.outputs.response).Payload }}'
 
-  deploy_to_prod:
-    name: "Push to production"
-    needs: deploy_canary
-    runs-on: ubuntu-latest
-    environment:
-      name: Production
-      url: "http://13.234.7.108/workflow-testing"
-    steps:
-      - name: "Invoke lambda function"
-        id: "invoke_lambda_function"
-        uses: gagoar/invoke-aws-lambda@master
-        with:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_LAMBDA_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_LAMBDA_SECRET_ACCESS_KEY }}
-          REGION: ap-south-1
-          FunctionName: deploy_job
-          Payload: '{"step": "promoteCanary", "job": "${{ github.event.repository.name }}"}'
+#   deploy_to_prod:
+#     name: "Push to production"
+#     needs: deploy_canary
+#     runs-on: ubuntu-latest
+#     environment:
+#       name: Production
+#       url: "http://13.234.7.108/workflow-testing"
+#     steps:
+#       - name: "Invoke lambda function"
+#         id: "invoke_lambda_function"
+#         uses: gagoar/invoke-aws-lambda@master
+#         with:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_LAMBDA_ACCESS_KEY }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_LAMBDA_SECRET_ACCESS_KEY }}
+#           REGION: ap-south-1
+#           FunctionName: deploy_job
+#           Payload: '{"step": "promoteCanary", "job": "${{ github.event.repository.name }}"}'
 
-      - name: "Log output to console"
-        run: echo '${{ fromJSON(steps.invoke_lambda_function.outputs.response).Payload }}'
+#       - name: "Log output to console"
+#         run: echo '${{ fromJSON(steps.invoke_lambda_function.outputs.response).Payload }}'
