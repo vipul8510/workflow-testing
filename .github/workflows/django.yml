@@ -39,24 +39,28 @@ jobs:
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-#   deploy_canary:
-#     name: "Deploy canary"
-#     needs: deploy_to_docker
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Get short SHA
-#         id: slug
-#         run: echo "::set-output name=sha7::$(echo ${GITHUB_SHA} | cut -c1-7)"
+  deploy_canary:
+    name: "Deploy canary"
+    needs: deploy_to_docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get short SHA
+        id: slug
+        run: echo "::set-output name=sha7::$(echo ${GITHUB_SHA} | cut -c1-7)"
+        
+      - name: Get repo name with branch
+        id: repo_branch
+        run: echo "::set-output name=rb::$(echo workflow-testing-${GITHUB_REF#refs/heads/})"
 
-#       - name: "Invoke lambda function"
-#         id: "invoke_lambda_function"
-#         uses: gagoar/invoke-aws-lambda@master
-#         with:
-#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_LAMBDA_ACCESS_KEY }}
-#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_LAMBDA_SECRET_ACCESS_KEY }}
-#           REGION: ap-south-1
-#           FunctionName: deploy_job
-#           Payload: '{"job": "${{ github.event.repository.name }}", "hash": "${{ steps.slug.outputs.sha7 }}" }'
+      - name: "Invoke lambda function"
+        id: "invoke_lambda_function"
+        uses: gagoar/invoke-aws-lambda@master
+        with:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_LAMBDA_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_LAMBDA_SECRET_ACCESS_KEY }}
+          REGION: ap-south-1
+          FunctionName: deploy_job
+          Payload: '{"job": ${{ steps.repo_branch.outputs.rb }}, "hash": "${{ steps.slug.outputs.sha7 }}" }'
 
 #       - name: "Log output to console"
 #         run: echo '${{ fromJSON(steps.invoke_lambda_function.outputs.response).Payload }}'
