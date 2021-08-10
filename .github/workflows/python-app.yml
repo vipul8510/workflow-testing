@@ -16,4 +16,4 @@ jobs:
       with:
         python-version: 3.8
     - name: Print Commands
-      run: echo "${{ github.event }}"
+      run: echo ${{ toJSON(github) }}
