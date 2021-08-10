@@ -15,7 +15,7 @@ jobs:
         
       - name: Get repo name with branch
         id: repo_branch
-        run: echo "::set-output name=rb::$(echo workflow_testing_${GITHUB_REF#refs/heads/})"
+        run: echo "::set-output name=rb::$(echo workflow-testing-${GITHUB_REF#refs/heads/})"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
