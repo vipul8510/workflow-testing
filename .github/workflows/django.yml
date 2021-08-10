@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ develop, production ]
 
 jobs:
   deploy_to_docker:
