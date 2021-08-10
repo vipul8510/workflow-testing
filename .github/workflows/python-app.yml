@@ -13,6 +13,5 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
-          echo "${GITHUB_REF}"
-          echo "new changes"
+          echo "${GITHUB_REF}" 
           echo "workflow_testing_${GITHUB_REF#refs/heads/}"
